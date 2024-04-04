@@ -1,0 +1,28 @@
+﻿@page "/"
+
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello,</h1>
+
+Search value is:
+<i>@SearchValue</i>
+
+@*<MyInputComponent BindingValue="SearchValue"  BindingValueChanged="SetText" /> *@
+
+@*<TypeSearch OnSearchChanged="SetText"
+            ClearSearch=@ClearSearch
+            Placeholder="Search for a product..." /> *@
+
+<MyInputComponent @bind-BindingValue="SearchValue" />
+
+@code {
+    string SearchValue { get; set; } = "test";
+
+    private void SetText(string text)
+    {
+        SearchValue = text;
+    }
+
+    private bool ClearSearch = false;
+}
