@@ -9,7 +9,7 @@ build_data_api_dev_image:
   image: docker:latest
   stage: build
   before_script:
-    - unset DOCKER_HOST
+    #- unset DOCKER_HOST
     - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY    
   script:
     - echo "Build step1 ..."
