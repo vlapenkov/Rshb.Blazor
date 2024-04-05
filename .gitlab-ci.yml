@@ -13,7 +13,8 @@ build_data_api_dev_image:
   script:
     - echo "Build step1 ..."
     - cd ./My.BlazorWebAssembly
-    - docker build -f ./My.BlazorWebAssembly/Dockerfile --pull -t "$REGISTRY_IMAGE/data_store_api:develop" -f Dockerfile ..
+    #- docker build -f ./My.BlazorWebAssembly/Dockerfile --pull -t "$REGISTRY_IMAGE/data_store_api:develop" -f Dockerfile ..
+    - docker build -t "$REGISTRY_IMAGE/data_store_api:develop" -f ./My.BlazorWebAssembly/Dockerfile .
     - echo "Build step2 ..."
     - docker push "$REGISTRY_IMAGE/data_store_api:develop"
     - echo "Build step3 ..."
