@@ -2,6 +2,7 @@ variables:
   REGISTRY_IMAGE: blazorwebassembly
   CURDATE: $CI_COMMIT_TIMESTAMP
   IMAGENAME: $REGISTRY_IMAGE-$CI_PIPELINE_IID
+  TAGGED_IMAGENAME: vlapenkov/$IMAGENAME
 
 stages:          # List of stages for jobs, and their order of execution
   - build  
@@ -14,12 +15,13 @@ build_data_api_dev_image:
     - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY    
   script:
     - echo "$IMAGENAME"
+    - echo "$TAGGED_IMAGENAME"
     - cd ./My.BlazorWebAssembly
     #- docker build -f ./My.BlazorWebAssembly/Dockerfile --pull -t "$REGISTRY_IMAGE/data_store_api:develop" -f Dockerfile ..
     #- echo "$REGISTRY_IMAGE/data_store_api:develop"
     - docker build -t "$IMAGENAME" -f ./Dockerfile .
-    - echo "Build step2 ..."
-    - docker push "$IMAGENAME"
+    - docker tag "$IMAGENAME"  "$TAGGED_IMAGENAME"
+    - docker push "$TAGGED_IMAGENAME"    
     - echo "Build step3 ..."
 
 #
