@@ -18,12 +18,12 @@ build_data_api_dev_image:
     - docker push "$REGISTRY_IMAGE/data_store_api:develop"
     - echo "Build step3 ..."
 
-
-  only:
-    refs:
-      - master
-    changes:
-      - My.BlazorWebAssembly/**/*
+#
+#  only:
+#    refs:
+#      - master
+#    changes:
+#      - My.BlazorWebAssembly/**/*
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
