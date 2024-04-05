@@ -1,5 +1,7 @@
 variables:
-  REGISTRY_IMAGE: $REGISTRY/blazorwebassembly
+  REGISTRY_IMAGE: blazorwebassembly
+  CURDATE: $CI_COMMIT_TIMESTAMP
+  IMAGENAME: $REGISTRY_IMAGE-$CI_COMMIT_TIMESTAMP
 
 stages:          # List of stages for jobs, and their order of execution
   - build  
@@ -12,13 +14,13 @@ build_data_api_dev_image:
     #- unset DOCKER_HOST
     - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY    
   script:
-    - echo "Build step1 ..."
+    - echo "$IMAGENAME"
     - cd ./My.BlazorWebAssembly
     #- docker build -f ./My.BlazorWebAssembly/Dockerfile --pull -t "$REGISTRY_IMAGE/data_store_api:develop" -f Dockerfile ..
     - echo "$REGISTRY_IMAGE/data_store_api:develop"
-    - docker build -t "$REGISTRY_IMAGE/data_store_api:develop" -f ./My.BlazorWebAssembly/Dockerfile .
+    - docker build -t "$IMAGENAME" -f ./My.BlazorWebAssembly/Dockerfile .
     - echo "Build step2 ..."
-    - docker push "$REGISTRY_IMAGE/data_store_api:develop"
+    - docker push "$IMAGENAME"
     - echo "Build step3 ..."
 
 #
