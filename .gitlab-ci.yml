@@ -10,15 +10,14 @@ stages:          # List of stages for jobs, and their order of execution
 build_data_api_dev_image:
   image: docker:latest
   stage: build
-  before_script:
-    #- unset DOCKER_HOST
+  before_script:    
     - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY    
   script:
     - echo "$IMAGENAME"
     - cd ./My.BlazorWebAssembly
     #- docker build -f ./My.BlazorWebAssembly/Dockerfile --pull -t "$REGISTRY_IMAGE/data_store_api:develop" -f Dockerfile ..
-    - echo "$REGISTRY_IMAGE/data_store_api:develop"
-    - docker build -t "$IMAGENAME" -f ./My.BlazorWebAssembly/Dockerfile .
+    #- echo "$REGISTRY_IMAGE/data_store_api:develop"
+    - docker build -t "$IMAGENAME" -f ./Dockerfile .
     - echo "Build step2 ..."
     - docker push "$IMAGENAME"
     - echo "Build step3 ..."
