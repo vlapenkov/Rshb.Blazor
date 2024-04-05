@@ -1,7 +1,7 @@
 variables:
   REGISTRY_IMAGE: blazorwebassembly
   CURDATE: $CI_COMMIT_TIMESTAMP
-  IMAGENAME: $REGISTRY_IMAGE-$CI_COMMIT_TIMESTAMP
+  IMAGENAME: $REGISTRY_IMAGE-$CI_PIPELINE_IID
 
 stages:          # List of stages for jobs, and their order of execution
   - build  
