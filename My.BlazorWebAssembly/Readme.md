@@ -1,6 +1,7 @@
-﻿Пример размещения Blazor Web assembly в docker
+﻿# Пример размещения Blazor Web assembly в docker
 docker-compose up собирает и запускает . 
 Файлы js собираются и копируются на nginx в папку /usr/share/nginx/html внутри контейнера, 
 см. dockerfile
 
-http://localhost:8080/
+- http://localhost:8080/ - в докере на локальном
+- http://test.averichev.tech/blazorwebassembly - на k8s
