@@ -1,9 +1,9 @@
 ﻿@page "/"
-
+@inject IConfiguration Configuration
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello,</h1>
+<h1>Hello,configurations is @Configuration["MyEnv"]</h1>
 
 Search value is:
 <i>@SearchValue</i>
