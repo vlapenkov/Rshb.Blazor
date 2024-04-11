@@ -12,9 +12,6 @@ namespace My.LightAuthorizationService.Controllers
     [Route("/api/[controller]")]
     public class AccountController
     {
-
-
-
         [HttpPost]
         public async Task<IdentResponse<string>> Login([FromBody] UserLogin userLogin)
         {
@@ -32,8 +29,7 @@ namespace My.LightAuthorizationService.Controllers
             Claim[] claims = new[]
             {
         new Claim(ClaimTypes.Name, user.UserName),
-           //new Claim(ClaimTypes.Role, "Admin"),
-           // new Claim(ClaimTypes.Role, "Viewer")
+
 
         };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
