@@ -1,0 +1,36 @@
+﻿@page "/userdata"
+@inject AuthenticationStateProvider _provider
+@inject AppState _appState
+
+<div>UserInfo</div>
+
+<p>Appstate is @_appState.IsAuthenticated</p>
+
+<CascadingAuthenticationState> 
+<AuthorizeView>
+    <Authorized>
+        <p>Hello, @context.User.Identity?.Name!</p>
+        <p><button @onclick="AuthentacateMethod">Authorized Only Button</button></p>
+
+            <AuthorizeView Roles="Admin" Context="innerContext">
+                <p>User: @innerContext.User</p>
+                <p>You have  'Admin' role claims.</p>
+            </AuthorizeView>
+            <AuthorizeView Roles="TestRole" Context="innerContext">
+                <p>User: @innerContext.User</p>
+                <p>You have  'TestRole' role claims.</p>
+            </AuthorizeView>
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not authorized.</p>
+        <p><button @onclick="AuthentacateMethod">Authorized Only Button</button></p>
+    </NotAuthorized>
+</AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    private async Task AuthentacateMethod()     
+    {
+        await _provider.GetAuthenticationStateAsync();
+    }
+}

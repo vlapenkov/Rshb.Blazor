@@ -1,5 +1,7 @@
 ﻿@namespace My.Components
+@using My.BlazorWebAssembly.Components
 
+@*
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -12,3 +14,39 @@
         </LayoutView>
     </NotFound>
 </Router>
+*@
+
+
+    <CascadingAuthenticationState>        
+            <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                        <Authorizing>
+                            <text>Authorising...please wait</text>
+                        </Authorizing>
+                        <NotAuthorized>
+                            @if (!context.User.Identity.IsAuthenticated)
+                            {
+
+                        Console.WriteLine($"IsAuthenticated:{context.User.Identity.IsAuthenticated}");
+                        <RedirectToLogin />
+                            }
+                            else
+                            {
+                                <p>You are not authorised to access this resource.</p>
+                            }
+                        </NotAuthorized>
+                    </AuthorizeRouteView>
+                </Found>
+                <NotFound>
+                    <PageTitle>Not found</PageTitle>
+                    <LayoutView Layout="@typeof(MainLayout)">
+                        @*<NotFound />*@
+                        <p role="alert">Извините, по этому адресу ничего нет</p>
+                    </LayoutView>
+                </NotFound>
+            </Router>
+        
+    </CascadingAuthenticationState>
+
+    

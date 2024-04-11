@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.BlazorWebAssembly", "My.BlazorWebAssembly\My.BlazorWebAssembly.csproj", "{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My.BlazorWebAssembly", "My.BlazorWebAssembly\My.BlazorWebAssembly.csproj", "{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My.LightAuthorizationService", "My.LightAuthorizationService\My.LightAuthorizationService.csproj", "{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.WebApi", "My.WebApi\My.WebApi.csproj", "{D2279537-FA44-4B05-B5FD-313B313AD914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Auth", "My.Auth\My.Auth.csproj", "{B724C790-1C4E-46AD-9702-39E40F1BA70D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2279537-FA44-4B05-B5FD-313B313AD914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2279537-FA44-4B05-B5FD-313B313AD914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2279537-FA44-4B05-B5FD-313B313AD914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2279537-FA44-4B05-B5FD-313B313AD914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B724C790-1C4E-46AD-9702-39E40F1BA70D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B724C790-1C4E-46AD-9702-39E40F1BA70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B724C790-1C4E-46AD-9702-39E40F1BA70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B724C790-1C4E-46AD-9702-39E40F1BA70D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

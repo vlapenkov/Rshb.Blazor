@@ -1,6 +1,10 @@
 ﻿@page "/read-environment"
-@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting 
+@using Microsoft.AspNetCore.Authorization
+
 @inject IWebAssemblyHostEnvironment Env
+
+@attribute [Authorize]
 
 <h1>Environment example</h1>
 

@@ -1,12 +1,20 @@
 ﻿@page "/"
 @inject IConfiguration Configuration
+@inject AppState state
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello,configurations is @Configuration["MyEnv"]</h1>
 
+<section>
 Search value is:
 <i>@SearchValue</i>
+</section>
+
+<section>
+App state is:
+<i>@state.IsAuthenticated</i>
+</section>
 
 @*<MyInputComponent BindingValue="SearchValue"  BindingValueChanged="SetText" /> *@
 

@@ -1,5 +1,6 @@
 ﻿@page "/counter"
 @inject ILogger<Counter> _logger
+@inject AppState state
 
 <PageTitle>Counter</PageTitle>
 
@@ -21,6 +22,7 @@
 
     protected override void OnInitialized()
     {
+        state.IsAuthenticated = !state.IsAuthenticated;
         _logger.LogInformation("Message from OnInitialized");
         //Console.WriteLine("Message from console");
         //   base.OnInitialized();

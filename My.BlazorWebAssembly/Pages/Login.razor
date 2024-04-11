@@ -1,0 +1,37 @@
+﻿@page "/login"
+@using My.BlazorWebAssembly.Dto
+@using My.BlazorWebAssembly.Services
+@inject IIdentityService service
+
+<h3>Login</h3>
+
+<MyInputComponent BindingValue="LoginValue" BindingValueChanged="LoginChanged" />
+<MyInputComponent BindingValue="Password" BindingValueChanged="PasswordChanged" />
+<button class="btn btn-primary" @onclick="LoginSubmit">Click me</button>
+@code {
+
+
+    string LoginValue { get; set; } = "Vova";
+
+    private void LoginChanged(string text)
+    {
+        LoginValue = text;
+    }
+
+    string Password { get; set; } = "Vova";
+
+    private void PasswordChanged(string text)
+    {
+        Password = text;
+    }
+
+    private async Task LoginSubmit()
+    {
+        await service.Login(new UserLogin(LoginValue,Password));
+    }
+
+        private bool ClearSearch = false;
+
+
+    
+}
