@@ -1,8 +1,6 @@
-﻿namespace Demo.Authentication.Authentication
-{
-    public class AuthSchemas
-    {        
+﻿namespace My.Auth;
 
-        public const string Jwt = "Jwt";
-    }
+public class AuthSchemas
+{
+    public const string Jwt = "Jwt";
 }

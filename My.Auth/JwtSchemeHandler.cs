@@ -1,14 +1,13 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Demo.Authentication.Authentication;
+﻿using Demo.Authentication.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Encodings.Web;
 
 
 namespace My.Auth
@@ -43,7 +42,7 @@ namespace My.Auth
         {
             // Получаем токен из заголовков запроса.
             // Для доступа к заголовкам, добавляем поле типа IHttpContextAccessor и добавляем его в конструктор.
-           
+
 
             string bearer = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
 
@@ -53,6 +52,7 @@ namespace My.Auth
             {
                 return Task.FromResult(AuthenticateResult.Fail("Токен отсутствует"));
             }
+            else { }
 
             if (bearer.Length <= 10) return Task.FromResult(AuthenticateResult.Fail("Токен невалидный"));
 

@@ -4,7 +4,6 @@ using My.Auth;
 using My.LightAuthorizationService.Dto;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace My.LightAuthorizationService.Controllers
 {
@@ -13,9 +12,9 @@ namespace My.LightAuthorizationService.Controllers
     public class AccountController
     {
         [HttpPost]
-        public async Task<IdentResponse<string>> Login([FromBody] UserLogin userLogin)
+        public IdentResponse<string> Login([FromBody] UserLogin userLogin)
         {
-
+            
             ClaimsIdentity identity = GetClaimsIdentity(userLogin);
 
             return new IdentResponse<string> { Data = GetJwtToken(identity) };
@@ -24,11 +23,14 @@ namespace My.LightAuthorizationService.Controllers
 
         private ClaimsIdentity GetClaimsIdentity(UserLogin user)
         {
+            
+
             // Here we can save some values to token.
             // For example we are storing here user id and email
             Claim[] claims = new[]
             {
         new Claim(ClaimTypes.Name, user.UserName),
+
 
 
         };
