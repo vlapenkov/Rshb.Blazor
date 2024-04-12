@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace My.BlazorWebAssembly.Services
 {
@@ -12,9 +11,9 @@ namespace My.BlazorWebAssembly.Services
         private readonly ILogger<CustomAuthStateProvider> _logger;
         private readonly AppState _appState;
 
-        public CustomAuthStateProvider( ILogger<CustomAuthStateProvider> logger, ILocalStorageService localStorage, AppState appState)
+        public CustomAuthStateProvider(ILogger<CustomAuthStateProvider> logger, ILocalStorageService localStorage, AppState appState)
         {
-            
+
             _logger = logger;
             _localStorage = localStorage;
             _appState = appState;
@@ -29,15 +28,15 @@ namespace My.BlazorWebAssembly.Services
         {
 
 
-           var identityToken =  await _localStorage.GetItemAsStringAsync(Constants.StorageTokenName);
+            var identityToken = await _localStorage.GetItemAsStringAsync(Constants.StorageTokenName);
 
-                        
+
 
             ClaimsIdentity identity = new ClaimsIdentity();
 
             if (identityToken != null)
             {
-                
+
 
                 try
                 {
@@ -66,10 +65,10 @@ namespace My.BlazorWebAssembly.Services
 
                 }
 
-                
+
             }
 
-            
+
 
             var user = new ClaimsPrincipal(identity);
 
@@ -78,9 +77,9 @@ namespace My.BlazorWebAssembly.Services
             NotifyAuthenticationStateChanged(Task.FromResult(state));
 
             // Нотификация связанных с appState по событию
-            _appState.Username = user?.Claims.FirstOrDefault(x=>x.Type== ClaimTypes.Name)?.Value;
+            _appState.Username = user?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
-            Console.WriteLine($"LoggedIn triggered: {identityToken != null}");
+
 
             return state;
 
@@ -94,7 +93,7 @@ namespace My.BlazorWebAssembly.Services
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 
             // We need this claim to fill AuthState.User.Identity.Name (to display current user name)
-           // keyValuePairs.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user.Name);
+            // keyValuePairs.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user.Name);
 
             return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
         }
@@ -134,17 +133,17 @@ namespace My.BlazorWebAssembly.Services
 
                 identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
                 identity.AddClaim(new Claim(ClaimTypes.Role, "Viewer"));
-                                
+
 
                 var user = new ClaimsPrincipal(identity);
 
                 return Task.FromResult(new AuthenticationState(user));
             }
-            
+
 
             return Task.FromResult(new AuthenticationState(Anonymous));
 
-            
+
         }
 
         #endregion
