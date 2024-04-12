@@ -26,17 +26,12 @@ namespace My.BlazorWebAssembly.Services
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
+            ClaimsIdentity identity = new();
 
-
-            var identityToken = await _localStorage.GetItemAsStringAsync(Constants.StorageTokenName);
-
-
-
-            ClaimsIdentity identity = new ClaimsIdentity();
+            var identityToken = await _localStorage.GetItemAsStringAsync(Constants.StorageTokenName);            
 
             if (identityToken != null)
             {
-
 
                 try
                 {
@@ -78,7 +73,6 @@ namespace My.BlazorWebAssembly.Services
 
             // Нотификация связанных с appState по событию
             _appState.Username = user?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-
 
 
             return state;

@@ -1,6 +1,14 @@
 ﻿@namespace My.Components
+@using My.BlazorWebAssembly.Services
 @inject AppState appState
-<i>@appState.Username</i>
+@inject IIdentityService identityService
+<i>@appState.Username 
+    
+    @if (!String.IsNullOrEmpty(appState.Username))
+    {
+        <a href="javascript: void(0);" onclick="@(() => identityService.Logout())">Logout</a>
+    }
+</i>
 
 
 
@@ -15,6 +23,8 @@
     {
          appState.OnChange -= StateHasChanged;        
     }
+
+
 
         
     }
