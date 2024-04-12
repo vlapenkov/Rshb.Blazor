@@ -1,7 +1,11 @@
 ﻿@page "/weather"
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using Microsoft.AspNetCore.Authorization
-@inject HttpClient Http
+@using Blazored.LocalStorage
+@using System.Net.Http.Headers
+@using My.BlazorWebAssembly.Services
+@inject IHttpClientFactory ClientFactory
+@inject ILocalStorageService LocalStorage;
 @attribute [Authorize]
 
 <PageTitle>Weather</PageTitle>
@@ -44,7 +48,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+
+        var storedToken = await LocalStorage.GetItemAsync<string>(Constants.StorageTokenName);
+
+        var httpClient = ClientFactory.CreateClient("My.WebApi");
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", storedToken);
+
+        forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("/api/WeatherForecast");
     }
 
     public class WeatherForecast

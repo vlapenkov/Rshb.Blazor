@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace My.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -19,7 +19,8 @@ namespace My.WebApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        //[HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet]
         [Authorize(Roles = "TestRole")]
         public IEnumerable<WeatherForecast> Get()
         {

@@ -3,6 +3,7 @@
 @code {
     protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo("/login");
+        string path = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(path)}");
     }
 }

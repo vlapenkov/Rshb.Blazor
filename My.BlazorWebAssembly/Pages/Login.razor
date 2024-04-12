@@ -2,6 +2,7 @@
 @using My.BlazorWebAssembly.Dto
 @using My.BlazorWebAssembly.Services
 @inject IIdentityService service
+@inject NavigationManager navigationManager
 
 <h3>Login</h3>
 
@@ -28,9 +29,16 @@
     private async Task LoginSubmit()
     {
         await service.Login(new UserLogin(LoginValue,Password));
+
+        string returnUrl = navigationManager.Uri.Split(["returnUrl="] , StringSplitOptions.None).LastOrDefault();
+
+        Console.WriteLine($"returnUrl is {returnUrl}");
+
+        if (returnUrl!=null)
+            navigationManager.NavigateTo(returnUrl);
     }
 
-        private bool ClearSearch = false;
+    
 
 
     

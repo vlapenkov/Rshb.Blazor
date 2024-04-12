@@ -13,7 +13,11 @@ WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5263") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5263") });
+
+builder.Services.AddHttpClient("My.LightAuthorizationService", c => c.BaseAddress = new Uri("http://localhost:5263"));
+
+builder.Services.AddHttpClient("My.WebApi", c => c.BaseAddress =   new Uri("https://localhost:7283"));
 
 builder.Services.AddSingleton<AppState>();
 

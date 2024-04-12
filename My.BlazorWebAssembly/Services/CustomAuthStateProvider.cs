@@ -10,12 +10,14 @@ namespace My.BlazorWebAssembly.Services
     {
         private ILocalStorageService _localStorage;
         private readonly ILogger<CustomAuthStateProvider> _logger;
+        private readonly AppState _appState;
 
-        public CustomAuthStateProvider( ILogger<CustomAuthStateProvider> logger, ILocalStorageService localStorage)
+        public CustomAuthStateProvider( ILogger<CustomAuthStateProvider> logger, ILocalStorageService localStorage, AppState appState)
         {
             
             _logger = logger;
             _localStorage = localStorage;
+            _appState = appState;
 
         }
 
@@ -29,41 +31,43 @@ namespace My.BlazorWebAssembly.Services
 
            var identityToken =  await _localStorage.GetItemAsStringAsync(Constants.StorageTokenName);
 
+                        
+
             ClaimsIdentity identity = new ClaimsIdentity();
 
             if (identityToken != null)
             {
+                
+
                 try
                 {
                     identity = new ClaimsIdentity(ParseClaimsFromJwt(identityToken), "jwt");
                 }
-                catch 
+                catch
                 {
                     await _localStorage.RemoveItemAsync(Constants.StorageTokenName);
 
                 }
-            }
 
-            if (identity.Claims != null)
-            {
 
-                var roleClaimJwt = identity.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value;
-
-                if (roleClaimJwt != null)
-
+                //Добавить ролевые claims
+                if (identity.Claims != null)
                 {
-                    var roleClaims = JsonSerializer.Deserialize<string[]>(roleClaimJwt!);
 
-                    identity.AddClaims(roleClaims?.Select(roleClaim => new Claim(ClaimTypes.Role, roleClaim)));
+                    var roleClaimJwt = identity.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value;
+
+                    if (roleClaimJwt != null)
+
+                    {
+                        var roleClaims = JsonSerializer.Deserialize<string[]>(roleClaimJwt!);
+
+                        identity.AddClaims(roleClaims?.Select(roleClaim => new Claim(ClaimTypes.Role, roleClaim)));
+                    }
+
                 }
 
-            }
-            //foreach (var roleClaim in roleClaims!)
-            //{
-            //    Console.WriteLine(roleClaim);
-            //    identity.AddClaim(new Claim(ClaimTypes.Role, roleClaim));
                 
-            //}
+            }
 
             
 
@@ -72,6 +76,11 @@ namespace My.BlazorWebAssembly.Services
             var state = new AuthenticationState(user);
 
             NotifyAuthenticationStateChanged(Task.FromResult(state));
+
+            // Нотификация связанных с appState по событию
+            _appState.Username = user?.Claims.FirstOrDefault(x=>x.Type== ClaimTypes.Name)?.Value;
+
+            Console.WriteLine($"LoggedIn triggered: {identityToken != null}");
 
             return state;
 
@@ -103,6 +112,8 @@ namespace My.BlazorWebAssembly.Services
             }
             return Convert.FromBase64String(base64);
         }
+
+        #region obsolete code
         public Task<AuthenticationState> GetAuthenticationStateAsyncOld()
         {
             _logger.LogInformation("GetAuthenticationStateAsync called");
@@ -135,5 +146,7 @@ namespace My.BlazorWebAssembly.Services
 
             
         }
+
+        #endregion
     }
 }

@@ -20,17 +20,6 @@
 
     private int currentCount = 1;
 
-    protected override void OnInitialized()
-    {
-        state.IsAuthenticated = !state.IsAuthenticated;
-        _logger.LogInformation("Message from OnInitialized");
-        //Console.WriteLine("Message from console");
-        //   base.OnInitialized();
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        _logger.LogInformation($"Message from AfterRender {firstRender}");
-    }
+   
 
 }

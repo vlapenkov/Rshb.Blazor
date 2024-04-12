@@ -95,7 +95,7 @@ namespace My.Auth
 
             #endregion
 
-            var jwtToken = handler.ReadJwtToken(token);
+            JwtSecurityToken jwtToken = handler.ReadJwtToken(token);
 
 
             if (jwtToken.ValidTo < DateTime.UtcNow)

@@ -1,0 +1,21 @@
+﻿@namespace My.Components
+@inject AppState appState
+<i>@appState.Username</i>
+
+
+
+@code {   
+
+    protected override void OnInitialized()
+    {
+         appState.OnChange += StateHasChanged;        
+    }
+
+    public void Dispose()
+    {
+         appState.OnChange -= StateHasChanged;        
+    }
+
+        
+    }
+
