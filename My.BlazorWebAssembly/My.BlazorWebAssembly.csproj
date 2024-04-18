@@ -16,8 +16,10 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
 
-  
-
+  <ItemGroup>
+    <PackageReference Include="AntDesign" Version="0.18.3" />
+  </ItemGroup>
+    
   <ItemGroup>
     <Content Update="wwwroot\appsettings.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -28,6 +30,10 @@
     <Content Update="wwwroot\appsettings.Staging.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+    
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   
   

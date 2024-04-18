@@ -5,9 +5,10 @@
 @using System.Net.Http.Headers
 @using My.BlazorWebAssembly.Services
 @using System.Text.Json
-@inject IHttpClientFactory ClientFactory
-@inject ILocalStorageService LocalStorage;
+@inject IMessageService antMessage;
+@inject IApiService apiService;
 @attribute [Authorize]
+
 
 <PageTitle>Weather</PageTitle>
 
@@ -48,82 +49,13 @@ else
     private WeatherForecast[]? forecasts ;
 
     protected override async Task OnInitializedAsync()
-    {
+    {               
 
-        JsonSerializerOptions jsonOptions = new JsonSerializerOptions
-          {
-              PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-          };
+        var result = await apiService.GetResult<WeatherForecast[]>("My.WebApi", "/api/WeatherForecast");
 
+        forecasts = result.IsSuccess ? result.Data : Array.Empty<WeatherForecast>();
 
-
-
-        var storedToken = await LocalStorage.GetItemAsync<string>(Constants.StorageTokenName);
-
-        var httpClient = ClientFactory.CreateClient("My.WebApi");
-
-        // Пример обработки ошибки валидации при Post
-
-        {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", storedToken);
-
-            // Пример обработки ошибки  при Get
-            var response  = await httpClient.GetAsync("/api/WeatherForecast");
-
-            //     отправляемый объект
-            //     WeatherForecast wf= new() {Date = DateOnly.MinValue, Summary ="test", TemperatureC=510 };
-
-            // создаем JsonContent
-            //     JsonContent content = JsonContent.Create(wf);
-
-            //     Пример обработки ошибки валидации при Post
-            //     var response = await httpClient.PostAsync("/api/WeatherForecast", content);
-
-
-
-            if (response.IsSuccessStatusCode)
-            {
-                string jsonString = await response.Content.ReadAsStringAsync();
-                forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(jsonString, jsonOptions);
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-            {
-                throw new Exception("Нет доступа");
-
-                forecasts = new WeatherForecast[0];
-
-            }
-            else 
-            {               
-
-                string sre = await response.Content.ReadAsStringAsync();
-
-                try
-                {
-                    var errorMessage = JsonSerializer.Deserialize<ValidationError>(sre, jsonOptions);
-
-                    throw new ValidationException(errorMessage.Error, errorMessage.Fields);
-                }
-                catch (ValidationException e)
-                {
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(sre);
-                }
-                
-
-              
-
-                forecasts = new WeatherForecast[0];
-            }            
-
-            
-        }
-    
-        
-
+        if (!result.IsSuccess) antMessage.Error(result.ErrorMessages[0]);
 
     }
 

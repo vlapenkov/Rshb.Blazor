@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IConfiguration Configuration
 @inject AppState state
+@inject IMessageService antMessage
 
 <PageTitle>Home</PageTitle>
 
@@ -22,6 +23,18 @@ Search value is:
 <MyInputComponent @bind-BindingValue="SearchValue" />
 
 @code {
+    protected override void OnInitialized()
+    {
+        antMessage.Error("OnInitialized");
+    }
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        antMessage.Success("OnAfterRender");
+    }
+    
+
     string SearchValue { get; set; } = "test";
 
     private void SetText(string text)

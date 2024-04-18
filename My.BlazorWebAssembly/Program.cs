@@ -23,7 +23,11 @@ builder.Services.AddSingleton<AppState>();
 
 builder.Services.AddBlazoredLocalStorage();
 
+builder.Services.AddAntDesign();
+
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+builder.Services.AddScoped<IApiService, ApiService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
