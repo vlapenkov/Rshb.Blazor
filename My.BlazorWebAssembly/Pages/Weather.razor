@@ -4,6 +4,7 @@
 @using Blazored.LocalStorage
 @using System.Net.Http.Headers
 @using My.BlazorWebAssembly.Services
+@using System.Text.Json
 @inject IHttpClientFactory ClientFactory
 @inject ILocalStorageService LocalStorage;
 @attribute [Authorize]
@@ -44,18 +45,86 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[]? forecasts ;
 
     protected override async Task OnInitializedAsync()
     {
+
+        JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+          {
+              PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+          };
+
+
+
 
         var storedToken = await LocalStorage.GetItemAsync<string>(Constants.StorageTokenName);
 
         var httpClient = ClientFactory.CreateClient("My.WebApi");
 
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", storedToken);
+        // Пример обработки ошибки валидации при Post
 
-        forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("/api/WeatherForecast");
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", storedToken);
+
+            // Пример обработки ошибки  при Get
+            var response  = await httpClient.GetAsync("/api/WeatherForecast");
+
+            //     отправляемый объект
+            //     WeatherForecast wf= new() {Date = DateOnly.MinValue, Summary ="test", TemperatureC=510 };
+
+            // создаем JsonContent
+            //     JsonContent content = JsonContent.Create(wf);
+
+            //     Пример обработки ошибки валидации при Post
+            //     var response = await httpClient.PostAsync("/api/WeatherForecast", content);
+
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonString = await response.Content.ReadAsStringAsync();
+                forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(jsonString, jsonOptions);
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                throw new Exception("Нет доступа");
+
+                forecasts = new WeatherForecast[0];
+
+            }
+            else 
+            {               
+
+                string sre = await response.Content.ReadAsStringAsync();
+
+                try
+                {
+                    var errorMessage = JsonSerializer.Deserialize<ValidationError>(sre, jsonOptions);
+
+                    throw new ValidationException(errorMessage.Error, errorMessage.Fields);
+                }
+                catch (ValidationException e)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(sre);
+                }
+                
+
+              
+
+                forecasts = new WeatherForecast[0];
+            }            
+
+            
+        }
+    
+        
+
+
     }
 
     public class WeatherForecast
@@ -64,8 +133,8 @@ else
 
         public int TemperatureC { get; set; }
 
-        public string? Summary { get; set; }
-
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+
+        public string? Summary { get; set; }
     }
 }

@@ -17,7 +17,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddHttpClient("My.LightAuthorizationService", c => c.BaseAddress = new Uri("http://localhost:5263"));
 
-builder.Services.AddHttpClient("My.WebApi", c => c.BaseAddress =   new Uri("https://localhost:7283"));
+builder.Services.AddHttpClient("My.WebApi", c => c.BaseAddress = new Uri("http://localhost:5256"));
 
 builder.Services.AddSingleton<AppState>();
 
@@ -27,7 +27,8 @@ builder.Services.AddScoped<IIdentityService, IdentityService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-builder.Services.AddAuthorizationCore();
+
+builder.Services.AddAuthorizationCore(options=>options.AddPolicy("AdminPolicy", policy=> policy.RequireRole("Admin")));
 
 
 

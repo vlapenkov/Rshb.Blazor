@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using My.WebApi.Dto;
+using System;
+using Taxi.Core.Exceptions;
 
 namespace My.WebApi.Controllers
 {
@@ -19,11 +22,26 @@ namespace My.WebApi.Controllers
             _logger = logger;
         }
 
-        //[HttpGet(Name = "GetWeatherForecast")]
+        
         [HttpGet]
-        [Authorize(Roles = "TestRole")]
+        //[Authorize(Roles = "TestRole")]
+        [Authorize(Policy = "AdminPolicy")]        
+        
+        
         public IEnumerable<WeatherForecast> Get()
         {
+
+            WeatherForecast wf = new()
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            };
+            _logger.LogInformation("Сущность  с Id={Id} создана. {@wf}", Guid.NewGuid(), wf);
+
+            //_logger.LogInformation("Some logging information");
+
+            //throw new AppException("Some gets wrong");
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -31,6 +49,12 @@ namespace My.WebApi.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost]        
+        public IActionResult Post([FromBody] WeatherForecast weatherForecast)
+        {
+            return Ok(weatherForecast);
         }
     }
 }

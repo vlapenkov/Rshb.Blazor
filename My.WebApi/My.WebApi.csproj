@@ -4,7 +4,21 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>Property1;Property2</DefineConstants>
+    <DefineConstants>$(DefineConstants);LogToFile</DefineConstants>
+    </PropertyGroup>
+  
+
+  <ItemGroup>
+    <Compile Remove="Common.Logging\**" />
+    <Content Remove="Common.Logging\**" />
+    <EmbeddedResource Remove="Common.Logging\**" />
+    <None Remove="Common.Logging\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -12,6 +26,23 @@
 
   <ItemGroup>
     <ProjectReference Include="..\My.Auth\My.Auth.csproj" />
+    <ProjectReference Include="..\My.SharedKernel\My.SharedKernel.csproj" />
+    <ProjectReference Include="..\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.2.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+    <PackageReference Include="MicroElements.OpenApi.FluentValidation" Version="6.0.0-beta.3" />
+    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0-beta.3" />
+  </ItemGroup>
+
+  
 
 </Project>

@@ -15,6 +15,9 @@
                 <p>User: @innerContext.User</p>
                 <p>You have  'Admin' role claims.</p>
             </AuthorizeView>
+            <AuthorizeView Policy="AdminPolicy" Context="innerContext">
+                <p>You have  'AdminPolicy' role claims.</p>
+            </AuthorizeView>
             <AuthorizeView Roles="TestRole" Context="innerContext">
                 <p>User: @innerContext.User</p>
                 <p>You have  'TestRole' role claims.</p>
