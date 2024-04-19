@@ -6,20 +6,24 @@
 
 <h3>Login</h3>
 
-<MyInputComponent BindingValue="LoginValue" BindingValueChanged="LoginChanged" />
-<MyInputComponent BindingValue="Password" BindingValueChanged="PasswordChanged" />
+@*<MyInputComponent BindingValue="LoginValue" BindingValueChanged="LoginChanged" />
+<MyInputComponent BindingValue="Password" BindingValueChanged="PasswordChanged" /> *@
+
+<MyInputComponent @bind-BindingValue="LoginValue" />
+<MyInputComponent @bind-BindingValue="Password" />
+
 <button class="btn btn-primary" @onclick="LoginSubmit">Click me</button>
 @code {
 
 
-    string LoginValue { get; set; } = "Vova";
+    string LoginValue { get; set; } = "admin@rshb.ru";
 
     private void LoginChanged(string text)
     {
         LoginValue = text;
     }
 
-    string Password { get; set; } = "Vova";
+    string Password { get; set; } = "admin";
 
     private void PasswordChanged(string text)
     {

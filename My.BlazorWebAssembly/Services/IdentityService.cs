@@ -32,7 +32,7 @@ namespace My.BlazorWebAssembly.Services
             
 
             var response = await _httpClient.CreateClient("My.LightAuthorizationService")
-                .PostAsJsonAsync<UserLogin>("api/Account", userLogin);
+                .PostAsJsonAsync<UserLogin>("api/Account/login", userLogin);
 
             if (response.IsSuccessStatusCode)
             {

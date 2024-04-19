@@ -1,68 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using My.Auth;
 using My.LightAuthorizationService.Dto;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using My.LightAuthorizationService.Entities;
+using My.LightAuthorizationService.Services;
+
 
 namespace My.LightAuthorizationService.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class AccountController
+    public class AccountController : ControllerBase
     {
-        [HttpPost]
-        public IdentResponse<string> Login([FromBody] UserLogin userLogin)
+
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly ITokenService  _tokenService;
+
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
         {
-            
-            ClaimsIdentity identity = GetClaimsIdentity(userLogin);
-
-            return new IdentResponse<string> { Data = GetJwtToken(identity) };
-
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
-        private ClaimsIdentity GetClaimsIdentity(UserLogin user)
-        {
-            
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> Login([FromBody] LoginRequest login)
+        {          
 
-            // Here we can save some values to token.
-            // For example we are storing here user id and email
-            Claim[] claims = new[]
+
+            var user = await _userManager.FindByEmailAsync(login.UserName);
+
+            if (user == null)
             {
-        new Claim(ClaimTypes.Name, user.UserName),
+                return Unauthorized();
+            }
 
+            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
 
+            if (!result.Succeeded)
+            {
+                return BadRequest(new IdentResponse<string>
+                {
+                    Success = false,
+                    Message = "Login failed"
+                });
+                //return BadRequest(new LoginResult { Successful = false, Error = "Login failed" });
+            }
 
-        };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
+            return Ok(
+                new IdentResponse<string>
+                {
+                    Success = true,
+                    Data = await _tokenService.CreateToken(user)
+                }
+                //new LoginResult
+                //{
+                //    Successful = true,
+                //    Token = await _tokenService.CreateToken(user)
+                //}
+            );
 
-            string[] userRoles = ["Admin", "Viewer", "TestRole"];
+            
 
-            //foreach (var roleName in userRoles)
-            //    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, roleName));
-
-            //claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "TestRole"));
-
-            // Adding roles code
-            // Roles property is string collection but you can modify Select code if it it's not
-            //claimsIdentity.AddClaims(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-            claimsIdentity.AddClaims(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
-            return claimsIdentity;
         }
 
-        private string GetJwtToken(ClaimsIdentity identity)
-        {
-
-            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-                issuer: AuthJwtTokenOptions.Issuer,
-                audience: AuthJwtTokenOptions.Audience,
-                notBefore: DateTime.UtcNow,
-                claims: identity.Claims,
-                // our token will live 1 hour, but you can change you token lifetime here
-                expires: DateTime.UtcNow.Add(TimeSpan.FromHours(1)),
-                signingCredentials: new SigningCredentials(AuthJwtTokenOptions.GetSecurityKey(), SecurityAlgorithms.HmacSha256));
-            return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        }
+       
     }
 }

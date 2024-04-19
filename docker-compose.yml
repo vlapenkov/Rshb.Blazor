@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+  redis:
+    image: 'redis:latest'
+    container_name: redis
+    hostname: redis
+    ports:
+      - '6379:6379'
+    command: '--requirepass P@ssw0rd_123'
+  ignite:
+    image: 'apacheignite/ignite:2.12.0'
+    container_name: ignite
+    hostname: ignite
+    ports:
+      - '10800:10800'    
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:     
+      - "./data:/var/lib/rabbitmq/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+  minio:
+    image: 'minio/minio:latest'
+    command: server --console-address ":9001" /data/
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: pproduct
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+     - minio-storage:/data
+volumes:
+ minio-storage:
+ pgdata:
+    driver: local
+#   volumes:
+#      - redis_data:/data
