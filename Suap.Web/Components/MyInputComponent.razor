@@ -1,0 +1,14 @@
+@namespace Suap.Web.Components
+<input type="text" @bind:get="BindingValue" @bind:set="SetAsync">
+
+@code {
+
+
+    [Parameter]
+    public string BindingValue { get; set; }
+    [Parameter]
+    public EventCallback<string> BindingValueChanged { get; set; }
+
+    async Task SetAsync(string value) => await BindingValueChanged.InvokeAsync(value);
+}
+

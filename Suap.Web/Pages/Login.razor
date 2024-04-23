@@ -1,0 +1,48 @@
+﻿@page "/login"
+@using Suap.Web.Dto
+@using Suap.Web.Services
+@inject IIdentityService service
+@inject NavigationManager navigationManager
+
+<h3>Login</h3>
+
+
+
+<MyInputComponent @bind-BindingValue="LoginValue" />
+<MyInputComponent @bind-BindingValue="Password" />
+
+<button class="btn btn-primary" @onclick="LoginSubmit">Click me</button>
+@code {
+
+
+    string LoginValue { get; set; } = "admin@rshb.ru";
+
+    private void LoginChanged(string text)
+    {
+        LoginValue = text;
+    }
+
+    string Password { get; set; } = "admin";
+
+    private void PasswordChanged(string text)
+    {
+        Password = text;
+    }
+
+    private async Task LoginSubmit()
+    {
+        await service.Login(new UserLogin(LoginValue,Password));
+
+        string returnUrl = navigationManager.Uri.Split(["returnUrl="] , StringSplitOptions.None).LastOrDefault();
+
+        Console.WriteLine($"returnUrl is {returnUrl}");
+
+        if (returnUrl!=null)
+            navigationManager.NavigateTo(returnUrl);
+    }
+
+    
+
+
+    
+}

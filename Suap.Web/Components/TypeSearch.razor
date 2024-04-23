@@ -1,0 +1,36 @@
+@namespace Suap.Web.Components
+<div class="inline">
+    <input type="search" class="rounded-sm w-full border border-gray-700 shadow-sm px-4 py-2 bg-white focus:outline-none" placeholder="@Placeholder"
+           @bind-value="@SearchTerm"
+           @bind-value:event="oninput"
+           @onkeyup="SearchChanged" 
+    />
+</div>
+
+
+
+@code {
+    public string SearchTerm { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSearchChanged { get; set; }
+
+    [Parameter]
+    public bool ClearSearch { get; set; }
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Search";
+
+    protected override void OnParametersSet()
+    {
+        if (ClearSearch)
+        {
+            SearchTerm = "";
+        }
+    }
+
+    private async Task SearchChanged()
+    {      
+        await OnSearchChanged.InvokeAsync(SearchTerm);
+    }
+}
