@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Suap.Identity.Persistence\Suap.Identity.Persistence.csproj" />
+    <ProjectReference Include="..\..\Common\Suap.Common.Jwt\Suap.Common.Jwt.csproj" />
+    <ProjectReference Include="..\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj" />    
+  
+    </ItemGroup>
+</Project>

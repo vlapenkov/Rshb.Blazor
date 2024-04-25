@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Suap.Web.Services;
 using Suap.Web.Components;
 using System.Reflection;
+using Suap.Web.StateManagement;
 
 
 
@@ -15,7 +16,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5263") });
 
-builder.Services.AddHttpClient("My.LightAuthorizationService", c => c.BaseAddress = new Uri("http://localhost:5263"));
+builder.Services.AddHttpClient("Suap.IdentityService", c => c.BaseAddress = new Uri("http://localhost:5263"));
 
 builder.Services.AddHttpClient("Suap.Triast", c => c.BaseAddress = new Uri("http://localhost:5256"));
 

@@ -24,7 +24,7 @@ namespace Suap.Triast.Controllers
 
         
         [HttpGet]
-        //[Authorize(Roles = "TestRole")]
+        //[Authorize(Roles = "Admin")]
         [Authorize(Policy = "AdminPolicy")]        
         
         
@@ -40,8 +40,8 @@ namespace Suap.Triast.Controllers
             _logger.LogInformation("Сущность  с Id={Id} создана. {@wf}", Guid.NewGuid(), wf);
 
             //_logger.LogInformation("Some logging information");
+               //throw new AppException("Some gets wrong");
 
-            //throw new AppException("Some gets wrong");
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

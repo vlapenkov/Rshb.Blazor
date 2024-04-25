@@ -19,6 +19,11 @@
   <ItemGroup>
     <PackageReference Include="AntDesign" Version="0.18.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Suap.Common.Contracts\Suap.Common.Contracts.csproj" />
+    <ProjectReference Include="..\Identity\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj" />
+  </ItemGroup>
     
   <ItemGroup>
     <Content Update="wwwroot\appsettings.Development.json">

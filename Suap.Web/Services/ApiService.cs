@@ -1,5 +1,7 @@
 ﻿using Blazored.LocalStorage;
+using Suap.Common.Contracts;
 using Suap.Web.Dto;
+using Suap.Web.StateManagement;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -34,40 +36,47 @@ public class ApiService : IApiService
             HttpResponseMessage response = await httpClient.GetAsync(uri);
 
 
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode) //200 OK
             {
                 string jsonString = await response.Content.ReadAsStringAsync();
 
                 T data = JsonSerializer.Deserialize<T>(jsonString, jsonOptions);
 
-                return new Result<T>(data!);
+                return Result<T>.FromSuccess(data!);
             }
+            //401 Unauthorized
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                return new Result<T>([$"Ошибка доступа: {response.StatusCode}, {response.Content}"]);
+                return Result<T>.FromError([$"Ошибка доступа: {response.StatusCode}, {response.Content}"]);
 
 
             }
-            else
+            //403 Bad request
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 string sre = await response.Content.ReadAsStringAsync();
 
                 var errorMessage = JsonSerializer.Deserialize<ValidationError>(sre, jsonOptions);
 
-                return new Result<T>([$"Ошибка валидации: {errorMessage.ToString()}"]);
+                return Result<T>.FromError([$"Ошибка валидации: {errorMessage.Error}"]);
 
+            }
+            else {
+
+                string contents = await response.Content.ReadAsStringAsync();
+                return Result<T>.FromError([$"Ошибка подключения к API: {contents}"]);
             }
 
 
         }
         catch (HttpRequestException e)
         {
-            return new Result<T>(["Ошибка подключения к API:" + e.Message]);
+            return Result<T>.FromError(["Ошибка подключения к API:" + e.Message]);
 
         }
         catch (Exception e)
         {
-            return new Result<T>(["Общая ошибка:" + e.Message]);
+            return Result<T>.FromError(["Общая ошибка:" + e.Message]);
         }
 
     }

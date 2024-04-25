@@ -1,7 +1,9 @@
 ﻿@page "/login"
+@using Suap.Identity.Contracts
 @using Suap.Web.Dto
 @using Suap.Web.Services
 @inject IIdentityService service
+@inject IMessageService antMessage;
 @inject NavigationManager navigationManager
 
 <h3>Login</h3>
@@ -31,14 +33,20 @@
 
     private async Task LoginSubmit()
     {
-        await service.Login(new UserLogin(LoginValue,Password));
+        string? returnUrl = default!;
 
-        string returnUrl = navigationManager.Uri.Split(["returnUrl="] , StringSplitOptions.None).LastOrDefault();
+        TokenResponse tokenResponse= await service.Login(new UserLogin(LoginValue, Password));
 
-        Console.WriteLine($"returnUrl is {returnUrl}");
+        if (!tokenResponse.IsSuccess)        
+        {
+            antMessage.Error(tokenResponse.ErrorMessages[0]);
+        }
+        else {
+        returnUrl = navigationManager.Uri.Split(["returnUrl="] , StringSplitOptions.None).LastOrDefault();        
 
-        if (returnUrl!=null)
+        if (returnUrl!=default)
             navigationManager.NavigateTo(returnUrl);
+        }
     }
 
     

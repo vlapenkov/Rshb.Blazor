@@ -1,22 +1,23 @@
-using Common.Logging;
-using Demo.Authentication.Authentication;
-using FluentValidation;
 using FluentValidation.AspNetCore;
+using FluentValidation;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Suap.Common.Jwt;
-using Suap.Triast.Converters;
-using Suap.Triast.Middlewares;
-using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
+using Suap.Identity.Persistence.Extensions;
+using Suap.IdentityService.Infrastructure;
+using Suap.IdentityService.Services;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
+using System.Text.Json;
+using Common.Logging;
+using Suap.Identity.WebApi.Middlewares;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+ConfigurationManager configuration = builder.Configuration;
 
 # region REST_API
 // для логирования ставит не корневую директорию, а bin\Debug\net8.0\Logs
@@ -33,7 +34,7 @@ builder.Services.AddControllers()
     {
 
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+      //  options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
     });
 
 
@@ -64,27 +65,50 @@ builder.Services.AddFluentValidationAutoValidation(c => c.DisableDataAnnotations
 
 #endregion
 
+builder.Services.AddDbContext<AppIdentityDbContext>(
+   //options => options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityConnection"))
+   options => options.ConfigDatabase(configuration.GetConnectionString("IdentityConnection")!)
+);
+
+
+builder.Services.AddIdentityServices();
+
+
+
+builder.Services.ConfigureOptions();
+
+
+
+//builder.Services.AddControllers();
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin()
+        );
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 
-builder.Services
-                // Наименование схемы аутентификации по умолчанию
-                .AddAuthentication(AuthSchemas.Jwt)                
-                .AddScheme<JwtSchemeOptions, JwtSchemeHandler>(AuthSchemas.Jwt, options => { options.IsActive = true; });
+builder.Services.AddTransient<SeedDefaultRolesUsers>();
 
-builder.Services.AddAuthorization(options => { 
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("FakePolicy", policy => policy.RequireRole("Fake"));
-});
-
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ITokenService, TokenService>();
 
 var app = builder.Build();
 
-app.UseCors(builder => builder.AllowAnyOrigin()
-                         .AllowAnyHeader()
-                         .AllowAnyMethod());
+
+//await SeedIdentityData(app);
+
+
+app.UseCors("CorsPolicy");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -95,11 +119,14 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
-//app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
-app.MapControllers();
+//var seedService = app.Services.GetService<SeedDefaultRolesUsers>();
+
+//await seedService.SeedUsersAndRolesAsync();
 
 app.Run();

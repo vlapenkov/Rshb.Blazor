@@ -1,22 +1,25 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Suap.Identity.Contracts;
 using Suap.Web.Dto;
-using Suap.Web.Components;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using Suap.Web.StateManagement;
 using System.Net.Http.Json;
-using System.Security.Principal;
+using System.Text.Json;
 
 namespace Suap.Web.Services
 {
     public class IdentityService : IIdentityService
     {
+        private static JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
+
         private readonly IHttpClientFactory _httpClient;
 
-        private ILocalStorageService _localStorage;
+        private readonly ILocalStorageService _localStorage;
 
-        private AuthenticationStateProvider _stateProvider;
+        private readonly AuthenticationStateProvider _stateProvider;
 
 
         public IdentityService(ILocalStorageService localStorage, AuthenticationStateProvider stateProvider, IHttpClientFactory httpClient)
@@ -26,34 +29,77 @@ namespace Suap.Web.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IdentResponse<string>> Login(UserLogin userLogin) {
+        public async Task<TokenResponse> Login(UserLogin userLogin)
+        {
 
-            IdentResponse<string> identResponse = null;
-            
+            TokenResponse tokenResponse = default!;
 
-            var response = await _httpClient.CreateClient("My.LightAuthorizationService")
-                .PostAsJsonAsync<UserLogin>("api/Account/login", userLogin);
+            string? errorMessage = default!;
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                identResponse = await response.Content.ReadFromJsonAsync<IdentResponse<string>>();
-                await _localStorage.SetItemAsync(Constants.StorageTokenName, identResponse.Data);
+                HttpResponseMessage response = await _httpClient.CreateClient("Suap.IdentityService")
+                    .PostAsJsonAsync("api/account/login", userLogin);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                    await _localStorage.SetItemAsync(Constants.StorageTokenName, tokenResponse.Data);
+                }
+                //401 Unauthorized
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    errorMessage = $"Ошибка доступа: {response.StatusCode}, {response.Content}";
+
+                }
+                //403 Bad request
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    string sre = await response.Content.ReadAsStringAsync();
+
+                    var error = JsonSerializer.Deserialize<ValidationError>(sre, _jsonOptions);
+
+                    errorMessage = $"Ошибка валидации: {error.Error}";
+
+                }
+                else
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+
+                    errorMessage = $"Ошибка подключения к API: {responseContent}";
+
+                }
+
             }
-            else
+            catch (HttpRequestException e)
             {
-                await _localStorage.RemoveItemAsync(Constants.StorageTokenName);
+                errorMessage = $"Ошибка подключения к API: {e.Message}";
+
+            }
+            catch (Exception e)
+            {
+                errorMessage = $"Общая ошибка: {e.Message}";
+            }
+            finally
+            {
+                if (errorMessage != null)
+                {
+                    if (await _localStorage.ContainKeyAsync(Constants.StorageTokenName))
+                    {
+                        await _localStorage.RemoveItemAsync(Constants.StorageTokenName);
+                    }
+                    tokenResponse = new TokenResponse { ErrorMessages = [errorMessage] };
+                }
+                await _stateProvider.GetAuthenticationStateAsync();
             }
 
-
-            await _stateProvider.GetAuthenticationStateAsync();
-
-                               
-            return identResponse;
+            return tokenResponse;
 
 
         }
 
-        public async Task Logout() {
+        public async Task Logout()
+        {
 
             await _localStorage.RemoveItemAsync(Constants.StorageTokenName);
 

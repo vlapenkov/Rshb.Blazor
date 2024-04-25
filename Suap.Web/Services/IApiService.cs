@@ -1,4 +1,5 @@
 ﻿
+using Suap.Common.Contracts;
 using Suap.Web.Dto;
 
 namespace Suap.Web.Services;
