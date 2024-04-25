@@ -1,13 +1,13 @@
 ﻿namespace Suap.Common.Contracts;
 
-public class Result<T>
+public class Result<T> : IResult<T>
 {
 
     public static Result<T> FromSuccess(T data) => new Result<T> { Data = data };
 
     public static Result<T> FromError(string[] messages) => new Result<T> { ErrorMessages = messages };    
 
-    //Один публичный конструктор для десериализации
+    
     public Result()
     {}
 

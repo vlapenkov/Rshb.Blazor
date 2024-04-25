@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using AntDesign;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Suap.Identity.Contracts;
 using Suap.Web.Dto;
@@ -32,9 +33,8 @@ namespace Suap.Web.Services
         public async Task<TokenResponse> Login(UserLogin userLogin)
         {
 
-            TokenResponse tokenResponse = default!;
-
-            string? errorMessage = default!;
+            TokenResponse tokenResponse = null!;
+            string? errorMessage = null!;
 
             try
             {
@@ -88,12 +88,15 @@ namespace Suap.Web.Services
                     {
                         await _localStorage.RemoveItemAsync(Constants.StorageTokenName);
                     }
-                    tokenResponse = new TokenResponse { ErrorMessages = [errorMessage] };
+                    
+                    
+                    tokenResponse = TokenResponse.FromError([errorMessage]);
+                    
                 }
                 await _stateProvider.GetAuthenticationStateAsync();
             }
 
-            return tokenResponse;
+            return tokenResponse!;
 
 
         }
