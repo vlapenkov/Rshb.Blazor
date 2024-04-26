@@ -12,7 +12,7 @@ using Suap.IdentityService.Infrastructure;
 namespace Suap.Identity.Persistence.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20240426063740_Init")]
+    [Migration("20240426064306_Init")]
     partial class Init
     {
         /// <inheritdoc />

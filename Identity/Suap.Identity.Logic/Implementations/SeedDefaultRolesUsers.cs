@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Suap.Identity.Domain;
+using Suap.Identity.Domain.Enums;
+using Suap.Identity.Logic.Implementations;
 
 
 namespace Suap.IdentityService.Services;
 
-public class SeedDefaultRolesUsers
+public class SeedDefaultRolesUsers : ISeedDefaultRolesUsers
 {
     private IConfiguration _config;
     private UserManager<AppUser> _userManager;
@@ -25,32 +27,24 @@ public class SeedDefaultRolesUsers
     }
 
 
-
     public async Task SeedRolesAsync()
     {
-        if (!_roleManager.Roles.Any())
+
+        var roleNames = Enum.GetValues(typeof(DefaultRoles)).Cast<DefaultRoles>().Select(p => EnumDescriptionProvider.GetDescription(p)).ToArray();
+
+        foreach (var roleName in roleNames)
         {
-            if (!await _roleManager.RoleExistsAsync("Admin"))
+            if (!await _roleManager.RoleExistsAsync(roleName))
             {
                 var role = new AppRole
                 {
-                    Name = "Admin"
+                    Name = roleName
                 };
 
                 await _roleManager.CreateAsync(role);
             }
-
-            if (!await _roleManager.RoleExistsAsync("Viewer"))
-            {
-                var role = new AppRole
-                {
-                    Name = "Viewer"
-                };
-
-                await _roleManager.CreateAsync(role);
-            }
-           
         }
+
     }
 
     public async Task SeedUsersAsync()
@@ -63,40 +57,20 @@ public class SeedDefaultRolesUsers
 
             var adminUser = new AppUser
             {
-                
+
                 Email = adminEmail,
-                UserName = adminEmail               
-                
+                UserName = adminEmail
+
             };
 
             var adminResult = await _userManager.CreateAsync(adminUser, adminPassword);
 
             if (adminResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(adminUser, "Admin");
-                await _userManager.AddToRoleAsync(adminUser, "Viewer");
+                await _userManager.AddToRoleAsync(adminUser, EnumDescriptionProvider.GetDescription(DefaultRoles.Admin));
             }
 
-            // create a viewer user
-            string viewerEmail = _config["Authentication:UserEmail"];
-            string viewerPassword = _config["Authentication:UserPassword"];
 
-            var viewerUser = new AppUser
-            {
-                
-                Email = viewerEmail,
-                UserName = viewerEmail,
-                
-            };
-
-            var viewerResult = await _userManager.CreateAsync(viewerUser, viewerPassword);
-
-            if (viewerResult.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(viewerUser, "viewer");
-            }
-
-            
         }
     }
 }

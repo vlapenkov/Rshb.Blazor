@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Suap.Common.Api;
 using Suap.Identity.Persistence.Extensions;
 using Suap.IdentityService.Infrastructure;
@@ -23,5 +24,25 @@ builder.RunApi((host, configuration, services) =>
 
     builder.Services.AddHttpContextAccessor();
 
+
+    builder.Services.AddScoped<ISeedDefaultRolesUsers, SeedDefaultRolesUsers>();
+
     builder.Services.AddTransient<ITokenService, TokenService>();
-});
+
+},
+   (Action<WebApplication>?)(async  app =>
+   {
+       await SeedDefaultRolesAndUser(app);
+
+   }));
+
+static async Task SeedDefaultRolesAndUser(WebApplication app)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        var seedService = services.GetRequiredService<ISeedDefaultRolesUsers>();
+        await seedService.SeedUsersAndRolesAsync();
+    }
+}
