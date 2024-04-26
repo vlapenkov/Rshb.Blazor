@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Suap.Common.Api\Suap.Common.Api.csproj" />
     <ProjectReference Include="..\..\Common\Suap.Common.Jwt\Suap.Common.Jwt.csproj" />
     <ProjectReference Include="..\..\Common\Suap.Common.Errors\Suap.Common.Errors.csproj" />
     <ProjectReference Include="..\..\Common\Suap.Common.Logging\Suap.Common.Logging.csproj" />
@@ -34,14 +35,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.2.2" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.2" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
-    <PackageReference Include="MicroElements.OpenApi.FluentValidation" Version="6.0.0-beta.3" />
-    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0-beta.3" />
-  </ItemGroup>
+ 
 
   
 

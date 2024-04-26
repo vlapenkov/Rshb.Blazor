@@ -14,7 +14,7 @@ public class WeatherForecastValidator : AbstractValidator<WeatherForecast>
             .NotEmpty();
 
         RuleFor(p => p.Date)
-            .NotEmpty()
+            .NotEmpty()            
             .Must(p => p > DateOnly.FromDateTime(DateTime.UtcNow));
 
     }

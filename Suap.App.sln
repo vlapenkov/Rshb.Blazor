@@ -27,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Persistence",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Logic", "Identity\Suap.Identity.Logic\Suap.Identity.Logic.csproj", "{DB90F066-A1C5-4534-8CBE-9EB330C671DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suap.Common.Contracts", "Common\Suap.Common.Contracts\Suap.Common.Contracts.csproj", "{351E39AF-A351-4C57-9AD4-CC953AECD0DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Contracts", "Common\Suap.Common.Contracts\Suap.Common.Contracts.csproj", "{351E39AF-A351-4C57-9AD4-CC953AECD0DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suap.Identity.Contracts", "Identity\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj", "{75C6E223-3627-4777-841E-2D4A70B92612}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Contracts", "Identity\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj", "{75C6E223-3627-4777-841E-2D4A70B92612}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suap.Common.Api", "Common\Suap.Common.Api\Suap.Common.Api.csproj", "{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{75C6E223-3627-4777-841E-2D4A70B92612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C6E223-3627-4777-841E-2D4A70B92612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C6E223-3627-4777-841E-2D4A70B92612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{DB90F066-A1C5-4534-8CBE-9EB330C671DA} = {3FD8D488-040D-410F-A7D3-123F11587670}
 		{351E39AF-A351-4C57-9AD4-CC953AECD0DB} = {0AEF66E0-191E-4E53-99DA-B12C97F35059}
 		{75C6E223-3627-4777-841E-2D4A70B92612} = {3FD8D488-040D-410F-A7D3-123F11587670}
+		{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8} = {0AEF66E0-191E-4E53-99DA-B12C97F35059}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4C4D6637-D265-424D-B39E-CEBBDC6571A2}
