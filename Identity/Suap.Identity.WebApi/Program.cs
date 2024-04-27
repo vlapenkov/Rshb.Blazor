@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Suap.Common.Api;
+using Suap.Identity.Logic.Implementations;
+using Suap.Identity.Logic.Interfaces;
 using Suap.Identity.Persistence.Extensions;
+using Suap.Identity.WebApi;
 using Suap.IdentityService.Infrastructure;
 using Suap.IdentityService.Services;
 
@@ -24,10 +27,8 @@ builder.RunApi((host, configuration, services) =>
 
     builder.Services.AddHttpContextAccessor();
 
+    builder.Services.AddDependencies();
 
-    builder.Services.AddScoped<ISeedDefaultRolesUsers, SeedDefaultRolesUsers>();
-
-    builder.Services.AddTransient<ITokenService, TokenService>();
 
 },
    (Action<WebApplication>?)(async  app =>

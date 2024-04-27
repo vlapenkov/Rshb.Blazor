@@ -1,3 +1,3 @@
-﻿namespace Suap.Identity.WebApi.Dto;
+﻿namespace Suap.Identity.Logic.Dto;
 
 public record AddUserToRoleRequest(string UserName, string RoleName);

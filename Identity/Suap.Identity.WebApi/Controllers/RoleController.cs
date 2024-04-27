@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Suap.Common.Exceptions;
 using Suap.Identity.Domain;
-using Suap.Identity.WebApi.Dto;
+using Suap.Identity.Logic.Dto;
+using Suap.Identity.Logic.Interfaces;
 
 
 namespace Suap.IdentityService.Controllers
@@ -12,11 +12,12 @@ namespace Suap.IdentityService.Controllers
     public class RoleController : ControllerBase
     {
 
-        private readonly RoleManager<AppRole> _roleManager;
+        private readonly IRoleService _roleService;
+      
 
-        public RoleController(RoleManager<AppRole> roleManager)
+        public RoleController(IRoleService roleService)
         {
-            _roleManager = roleManager;
+            _roleService = roleService;
         }
 
         /// <summary>
@@ -29,19 +30,7 @@ namespace Suap.IdentityService.Controllers
         public async Task<IActionResult> Create([FromBody] CreateRoleRequest request)
         {
 
-            var role = await _roleManager.FindByNameAsync(request.Name);
-
-            if (role != null)
-            {
-                throw new AppException($"Роль {request.Name} уже существует");
-            }
-
-            var result = await _roleManager.CreateAsync(new AppRole { Name = request.Name });
-
-            if (!result.Succeeded)
-            {
-                throw new AppException(result.Errors.First().Description);
-            }
+            await _roleService.CreateRole(request);
 
             return Ok();
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Suap.Identity.Domain;
 using Suap.Identity.Domain.Enums;
 using Suap.Identity.Logic.Implementations;
+using Suap.Identity.Logic.Interfaces;
 
 
 namespace Suap.IdentityService.Services;

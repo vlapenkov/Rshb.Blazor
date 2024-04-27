@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Suap.Identity.Persistence\Suap.Identity.Persistence.csproj" />
     <ProjectReference Include="..\..\Common\Suap.Common.Jwt\Suap.Common.Jwt.csproj" />
+    <ProjectReference Include="..\..\Common\Suap.Common.Errors\Suap.Common.Errors.csproj" />
     <ProjectReference Include="..\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj" />    
   
     </ItemGroup>

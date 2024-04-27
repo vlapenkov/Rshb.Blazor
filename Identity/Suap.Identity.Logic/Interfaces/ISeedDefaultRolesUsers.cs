@@ -1,5 +1,4 @@
-﻿
-namespace Suap.IdentityService.Services;
+﻿namespace Suap.Identity.Logic.Interfaces;
 
 public interface ISeedDefaultRolesUsers
 {

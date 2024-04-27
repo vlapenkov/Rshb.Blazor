@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
-using Suap.Identity.WebApi.Dto;
+using Suap.Identity.Logic.Dto;
+
 
 namespace Suap.Identity.WebApi.Validators;
 
