@@ -23,8 +23,8 @@ namespace Suap.Common.Jwt
         private readonly Random _random;
         // Секретный ключ, используемый для создания токена и проверки полученного токена.
         // Так хранить небезопасно, лучше принимать через JwtSchemeOptions
-        // private const string SecretKey = "super_secret_key";
-        string SecretKey = AuthJwtTokenOptions.Key;
+        
+        string secretKey = AuthJwtTokenOptions.Key;
 
         public JwtSchemeHandler(
             IOptionsMonitor<JwtSchemeOptions> options,
@@ -78,7 +78,7 @@ namespace Suap.Common.Jwt
 
             var bytesToSign = Encoding.UTF8.GetBytes($"{header}.{payload}");
 
-            var secret = Encoding.UTF8.GetBytes(SecretKey);
+            var secret = Encoding.UTF8.GetBytes(secretKey);
 
             var alg = new HMACSHA256(secret);
             var hash = alg.ComputeHash(bytesToSign);

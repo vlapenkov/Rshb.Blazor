@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Suap.Web.Services;
 using Suap.Web.Components;
 using Suap.Web.StateManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 
 
@@ -13,11 +14,13 @@ WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5263") });
+var configuration = builder.Configuration;
 
-builder.Services.AddHttpClient("Suap.IdentityService", c => c.BaseAddress = new Uri("http://localhost:5263"));
+ string val =builder.Configuration["IDENTITY_URI"];
 
-builder.Services.AddHttpClient("Suap.Triast", c => c.BaseAddress = new Uri("http://localhost:5256"));
+builder.Services.AddHttpClient("Suap.IdentityService", c => c.BaseAddress = new Uri(configuration["IDENTITY_URI"]));
+
+builder.Services.AddHttpClient("Suap.Triast", c => c.BaseAddress = new Uri(configuration["TRIAST_URI"]));
 
 builder.Services.AddSingleton<AppState>();
 

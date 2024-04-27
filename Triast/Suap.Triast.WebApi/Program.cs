@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.RunApi((host, configuration, services) =>
 {
+    
+
     builder.Services
                  // Наименование схемы аутентификации по умолчанию
                  .AddAuthentication(AuthSchemas.Jwt)

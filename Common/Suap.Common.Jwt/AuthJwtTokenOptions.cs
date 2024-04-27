@@ -5,11 +5,14 @@ namespace Suap.Common.Jwt
 {
     public static class AuthJwtTokenOptions
     {
-        public const string Issuer = "SomeIssuesName";
+        // TODO: брать из configmap
+        public const string Issuer = "Suap";
 
-        public const string Audience = "https://awesome-website.com/";
+        // TODO: брать из configmap
+        public const string Audience = "https://replace-with-my-url.ru/";
 
-        public const string Key = "this is my custom Secret key for authentication";
+        // TODO: брать из Secret
+        public const string Key = "this_is_my_custom Secret_key_for_authentication";
 
         public static SecurityKey GetSecurityKey() =>
             new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Key));

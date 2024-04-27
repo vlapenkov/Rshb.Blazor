@@ -53,6 +53,7 @@ public class SeedDefaultRolesUsers : ISeedDefaultRolesUsers
         if (!_userManager.Users.Any())
         {
             // create an admin user
+            string adminName = _config["Authentication:AdminName"];
             string adminEmail = _config["Authentication:AdminEmail"];
             string adminPassword = _config["Authentication:AdminPassword"];
 
@@ -60,7 +61,7 @@ public class SeedDefaultRolesUsers : ISeedDefaultRolesUsers
             {
 
                 Email = adminEmail,
-                UserName = adminEmail
+                UserName = adminName
 
             };
 
