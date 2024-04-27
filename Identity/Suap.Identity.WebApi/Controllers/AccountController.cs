@@ -74,7 +74,9 @@ namespace Suap.IdentityService.Controllers
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+
             if (!result.Succeeded)
             {
                 throw new AppException("Нельзя поменять пароль пользователю");
