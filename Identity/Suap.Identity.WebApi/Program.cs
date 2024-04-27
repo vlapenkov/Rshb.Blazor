@@ -18,7 +18,8 @@ ConfigurationManager configuration = builder.Configuration;
 builder.RunApi((host, configuration, services) =>
 {
     builder.Services.AddDbContext<AppIdentityDbContext>(
-   options => options.ConfigDatabase(configuration.GetConnectionString("IdentityConnection")!)
+   //options => options.ConfigDatabase(configuration.GetConnectionString("IdentityConnection")!)
+   options => options.ConfigDatabase(configuration["Identity_DB"]!)
 );
 
     builder.Services.AddIdentityServices();
