@@ -13,10 +13,9 @@ public static class IdentityExtensions
     public static IServiceCollection AddIdentityServices(this IServiceCollection services)
     {
         services.AddIdentityCore<AppUser>()
-            .AddRoles<AppRole>()
-            //.AddRoleManager<RoleManager<AppRole>>()
+            .AddRoles<AppRole>()            
             .AddSignInManager<SignInManager<AppUser>>()
-            //.AddRoleValidator<RoleValidator<IdentityRole>>()
+            .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider)            
             .AddEntityFrameworkStores<AppIdentityDbContext>();
 
         // обязательно, иначе не работает SignInManager
@@ -25,13 +24,7 @@ public static class IdentityExtensions
         return services;
     }
 
-    public static IServiceCollection AddNewIdentity(this IServiceCollection services)
-    {
-        services.AddIdentity<AppUser, AppRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>();
-
-        return services;
-    }
+   
 
     public static IServiceCollection ConfigureOptions(this IServiceCollection services)
     {

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Suap.Common.Exceptions;
 using Suap.Identity.Contracts;
 using Suap.Identity.Domain;
+using Suap.Identity.WebApi.Dto;
 using Suap.IdentityService.Dto;
 using Suap.IdentityService.Services;
 
@@ -34,18 +36,18 @@ namespace Suap.IdentityService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login([FromBody] LoginRequest login)
+        public async Task<IActionResult> Login([FromBody] LoginRequest model)
         {
             string errorAuthenticationMessage = "Неуспешная попытка аутентификации";
 
-            var user = await _userManager.FindByEmailAsync(login.UserName);
+            var user = await _userManager.FindByNameAsync(model.UserName);
 
             if (user == null)
             {
                 throw new AppException(errorAuthenticationMessage);
             }
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
             if (!result.Succeeded)
             {
@@ -58,6 +60,30 @@ namespace Suap.IdentityService.Controllers
 
 
         }
+
+        [HttpPost("changepassword")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest model)
+        {
+            
+            var user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user == null)
+            {
+                throw new AppException($"Пользователь '{model.UserName}' отсутствует");
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                throw new AppException("Нельзя поменять пароль пользователю");
+            }
+
+            return Ok();
+
+        }
+
 
 
     }
