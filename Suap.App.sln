@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Web", "Suap.Web\Suap.Web.csproj", "{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Web", "src\Suap.Web\Suap.Web.csproj", "{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.WebApi", "Identity\Suap.Identity.WebApi\Suap.Identity.WebApi.csproj", "{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.WebApi", "src\Identity\Suap.Identity.WebApi\Suap.Identity.WebApi.csproj", "{C253DEBA-C1C3-4B12-82D8-CB6A198950BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Triast.WebApi", "Triast\Suap.Triast.WebApi\Suap.Triast.WebApi.csproj", "{D2279537-FA44-4B05-B5FD-313B313AD914}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Triast.WebApi", "src\Triast\Suap.Triast.WebApi\Suap.Triast.WebApi.csproj", "{D2279537-FA44-4B05-B5FD-313B313AD914}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Jwt", "Common\Suap.Common.Jwt\Suap.Common.Jwt.csproj", "{B724C790-1C4E-46AD-9702-39E40F1BA70D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Jwt", "src\Common\Suap.Common.Jwt\Suap.Common.Jwt.csproj", "{B724C790-1C4E-46AD-9702-39E40F1BA70D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Errors", "Common\Suap.Common.Errors\Suap.Common.Errors.csproj", "{9C6ABC98-5B6A-4286-8B5A-DB1E5DF9CF27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Errors", "src\Common\Suap.Common.Errors\Suap.Common.Errors.csproj", "{9C6ABC98-5B6A-4286-8B5A-DB1E5DF9CF27}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Logging", "Common\Suap.Common.Logging\Suap.Common.Logging.csproj", "{8A812C1A-02F6-4C6B-8784-54E2F34B18B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Logging", "src\Common\Suap.Common.Logging\Suap.Common.Logging.csproj", "{8A812C1A-02F6-4C6B-8784-54E2F34B18B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{0AEF66E0-191E-4E53-99DA-B12C97F35059}"
 EndProject
@@ -21,17 +21,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{3F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Triast", "Triast", "{C5B9D5C9-1925-47C0-854F-73812A40C1A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Domain", "Identity\Suap.Identity.Domain\Suap.Identity.Domain.csproj", "{C92CB7CD-3E75-4FB1-AA8E-E0D22BC4EC16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Domain", "src\Identity\Suap.Identity.Domain\Suap.Identity.Domain.csproj", "{C92CB7CD-3E75-4FB1-AA8E-E0D22BC4EC16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Persistence", "Identity\Suap.Identity.Persistence\Suap.Identity.Persistence.csproj", "{4616BD18-21FC-4F76-AA4D-44B9FC595B38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Persistence", "src\Identity\Suap.Identity.Persistence\Suap.Identity.Persistence.csproj", "{4616BD18-21FC-4F76-AA4D-44B9FC595B38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Logic", "Identity\Suap.Identity.Logic\Suap.Identity.Logic.csproj", "{DB90F066-A1C5-4534-8CBE-9EB330C671DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Logic", "src\Identity\Suap.Identity.Logic\Suap.Identity.Logic.csproj", "{DB90F066-A1C5-4534-8CBE-9EB330C671DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Contracts", "Common\Suap.Common.Contracts\Suap.Common.Contracts.csproj", "{351E39AF-A351-4C57-9AD4-CC953AECD0DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Contracts", "src\Common\Suap.Common.Contracts\Suap.Common.Contracts.csproj", "{351E39AF-A351-4C57-9AD4-CC953AECD0DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Contracts", "Identity\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj", "{75C6E223-3627-4777-841E-2D4A70B92612}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Identity.Contracts", "src\Identity\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj", "{75C6E223-3627-4777-841E-2D4A70B92612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suap.Common.Api", "Common\Suap.Common.Api\Suap.Common.Api.csproj", "{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Api", "src\Common\Suap.Common.Api\Suap.Common.Api.csproj", "{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{099AA68D-9222-4C52-AB1C-C20DAE8CC0F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,11 +94,15 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B0286AAB-6AA4-48FA-889F-B9A9AF5645D8} = {099AA68D-9222-4C52-AB1C-C20DAE8CC0F5}
 		{C253DEBA-C1C3-4B12-82D8-CB6A198950BF} = {3FD8D488-040D-410F-A7D3-123F11587670}
 		{D2279537-FA44-4B05-B5FD-313B313AD914} = {C5B9D5C9-1925-47C0-854F-73812A40C1A2}
 		{B724C790-1C4E-46AD-9702-39E40F1BA70D} = {0AEF66E0-191E-4E53-99DA-B12C97F35059}
 		{9C6ABC98-5B6A-4286-8B5A-DB1E5DF9CF27} = {0AEF66E0-191E-4E53-99DA-B12C97F35059}
 		{8A812C1A-02F6-4C6B-8784-54E2F34B18B7} = {0AEF66E0-191E-4E53-99DA-B12C97F35059}
+		{0AEF66E0-191E-4E53-99DA-B12C97F35059} = {099AA68D-9222-4C52-AB1C-C20DAE8CC0F5}
+		{3FD8D488-040D-410F-A7D3-123F11587670} = {099AA68D-9222-4C52-AB1C-C20DAE8CC0F5}
+		{C5B9D5C9-1925-47C0-854F-73812A40C1A2} = {099AA68D-9222-4C52-AB1C-C20DAE8CC0F5}
 		{C92CB7CD-3E75-4FB1-AA8E-E0D22BC4EC16} = {3FD8D488-040D-410F-A7D3-123F11587670}
 		{4616BD18-21FC-4F76-AA4D-44B9FC595B38} = {3FD8D488-040D-410F-A7D3-123F11587670}
 		{DB90F066-A1C5-4534-8CBE-9EB330C671DA} = {3FD8D488-040D-410F-A7D3-123F11587670}
