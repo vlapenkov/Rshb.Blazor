@@ -9,18 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 
+
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-var configuration = builder.Configuration;
+var configuration = builder.Configuration; 
 
- string val =builder.Configuration["IDENTITY_URI"];
+builder.Services.AddHttpClient("Suap.IdentityService", c => c.BaseAddress = new Uri(configuration["IDENTITY_URI"]!));
 
-builder.Services.AddHttpClient("Suap.IdentityService", c => c.BaseAddress = new Uri(configuration["IDENTITY_URI"]));
-
-builder.Services.AddHttpClient("Suap.Triast", c => c.BaseAddress = new Uri(configuration["TRIAST_URI"]));
+builder.Services.AddHttpClient("Suap.Triast", c => c.BaseAddress = new Uri(configuration["TRIAST_URI"]!));
 
 builder.Services.AddSingleton<AppState>();
 
