@@ -1,0 +1,59 @@
+﻿@inherits LayoutComponentBase
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">       
+            <UserInfoLayout />
+        </div>     
+
+         <article class="content px-4">
+             @Body
+             </article>
+
+        @*
+        <article class="content px-4">
+            
+            <ErrorBoundary @ref="errorBoundary">
+                <ChildContent>
+                    <i>Some data</i>
+                    @Body
+                </ChildContent> 
+                <ErrorContent Context="Exception" >
+                    
+                    @if ((Exception as ValidationException)?.Fields!=null){
+                        
+                    <div>
+                        @Exception.Message<br />
+
+                            @foreach (var item in ((ValidationException)Exception).Fields)
+                            {
+                            @item.Name @String.Join(',',item.Messages)<br/>   
+                            
+                            }
+                            
+                        </div>
+                    }else
+                    {
+                        <div>
+                            @Exception.Message<br />
+                        </div>
+
+                    }
+                </ErrorContent>
+               
+            </ErrorBoundary>
+        </article> *@
+    </main>
+</div>
+
+@code {
+    private ErrorBoundary? errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+}

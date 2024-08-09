@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Suap.Common.Jwt;
 using Suap.Identity.Domain;
-
+using Suap.IdentityService.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -18,26 +19,35 @@ public class TokenService : ITokenService
     private readonly SymmetricSecurityKey _key;
     private readonly UserManager<AppUser> _userManager;
     private readonly ILogger<TokenService> _logger;
+    private readonly AppIdentityDbContext _dbContext;
 
-    public TokenService(IConfiguration config, UserManager<AppUser> userManager, ILogger<TokenService> logger)
+    public TokenService(IConfiguration config, UserManager<AppUser> userManager, ILogger<TokenService> logger, AppIdentityDbContext dbContext)
     {
         _userManager = userManager;
         _logger = logger;
         _config = config;
-      
+        _dbContext = dbContext;
+
+
     }
 
     public async Task<string> CreateToken(AppUser user)
     {
+
         var claims = new List<Claim>
         {
            new Claim(ClaimTypes.Name, user.UserName)
         };
 
-        var roles = await _userManager.GetRolesAsync(user);
+        IList<string> roleNames = await _userManager.GetRolesAsync(user);
 
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        Guid[] roleIds =await _dbContext.Roles.Where(p => roleNames.Contains(p.Name!)).Select(p=>p.Id).ToArrayAsync();
 
+        string?[] menuItems =_dbContext.RoleClaims.Where(p => roleIds.Contains(p.RoleId) && p.ClaimType.ToUpper()=="MENUITEM").Select(p=>p.ClaimValue).Distinct().ToArray();
+
+        claims.AddRange(roleNames.Select(role => new Claim(ClaimTypes.Role, role)));
+
+        claims.AddRange(menuItems.Select(menuItem=> new Claim("menuItem", menuItem!)));
 
         return GetJwtToken(new ClaimsIdentity(claims));
        

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Rk.Messages.Common.Middlewares;
 using Suap.Common.Api;
 using Suap.Identity.Logic.Implementations;
 using Suap.Identity.Logic.Interfaces;
@@ -34,6 +35,7 @@ builder.RunApi((host, configuration, services) =>
 },
    (Action<WebApplication>?)(async  app =>
    {
+       app.UseMiddleware<LogUserNameMiddleware>();
        await SeedDefaultRolesAndUser(app);
 
    }));

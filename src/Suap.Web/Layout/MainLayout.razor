@@ -13,39 +13,7 @@
              @Body
              </article>
 
-        @*
-        <article class="content px-4">
-            
-            <ErrorBoundary @ref="errorBoundary">
-                <ChildContent>
-                    <i>Some data</i>
-                    @Body
-                </ChildContent> 
-                <ErrorContent Context="Exception" >
-                    
-                    @if ((Exception as ValidationException)?.Fields!=null){
-                        
-                    <div>
-                        @Exception.Message<br />
-
-                            @foreach (var item in ((ValidationException)Exception).Fields)
-                            {
-                            @item.Name @String.Join(',',item.Messages)<br/>   
-                            
-                            }
-                            
-                        </div>
-                    }else
-                    {
-                        <div>
-                            @Exception.Message<br />
-                        </div>
-
-                    }
-                </ErrorContent>
-               
-            </ErrorBoundary>
-        </article> *@
+        
     </main>
 </div>
 

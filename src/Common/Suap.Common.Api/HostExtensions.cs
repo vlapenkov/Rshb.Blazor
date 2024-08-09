@@ -32,6 +32,8 @@ public static  class HostExtensions
 
         builder.Services.AddCors();
 
+        builder.Services.AddHealthChecks();
+
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
         builder.Services.AddControllers()
@@ -83,6 +85,8 @@ public static  class HostExtensions
         app.UseCors(builder => builder.AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod());
+
+        app.MapHealthChecks("/healthz");
 
 
         if (!builder.Environment.IsProduction())

@@ -24,10 +24,12 @@ namespace Suap.Triast.Controllers
 
         
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
-        [Authorize(Policy = "AdminPolicy")]        
-        
-        
+        [Authorize]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "role1")]
+        //[Authorize(Policy = "AdminPolicy")]        
+
+
         public IEnumerable<WeatherForecast> Get()
         {
 

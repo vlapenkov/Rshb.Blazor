@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="script1.sql" />
+    <None Remove="script2.sql" />
+    <None Remove="SQL\script11.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SQL\script11.sql" />
+    <EmbeddedResource Include="SQL\script1.sql" />
+    <EmbeddedResource Include="SQL\script2.sql" />
+  </ItemGroup>
+
+</Project>

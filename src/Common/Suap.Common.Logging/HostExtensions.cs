@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Events;
 using System.Reflection;
 
 namespace Common.Logging;
@@ -12,24 +13,29 @@ public static class HostExtensions
     {
         builder.ConfigureHostConfiguration(b =>
         {
-            var jsonSource = new JsonStreamConfigurationSource 
+            var jsonSource = new JsonStreamConfigurationSource
             {
                 Stream = Assembly.GetExecutingAssembly()
                     .GetManifestResourceStream($"Suap.{nameof(Common)}.{nameof(Logging)}.settings.json")
             };
-            
+
             b.Sources.Insert(0, jsonSource);
         });
 
+
+
         return builder.UseSerilog((context, services, configuration) =>
         {
-#if LogToElasticsearch
-            ConfigureElasticsearch(context.Configuration);
-#endif
-            var c = configuration
-                .ReadFrom.Configuration(context.Configuration)
+            
+
+                 configuration
+                .ReadFrom.Configuration(context.Configuration)                
                 .Enrich.WithThreadId()
                 .Enrich.FromLogContext();
+
+            
+
+           
         });
     }
 
