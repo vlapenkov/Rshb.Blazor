@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.Extensions.Options;
 using Rk.Messages.Common.Extensions;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Authentication;
+using Suap.Triast.WebApi.Extensions;
 //var timer = new Stopwatch();
 //timer.Start();
 
@@ -43,7 +45,9 @@ builder.RunApi((host, configuration, services) =>
     //builder.WebHost.UseUrls("http://*:8080");
 
     //Console.WriteLine(Environment.GetEnvironmentVariable("Identity_DB"));
-    Console.WriteLine(configuration);
+    
+
+    builder.Services.AddTransient<IClaimsTransformation, RoleClaimsTransformation>();
 
 
     // Наименование схемы аутентификации по умолчанию
@@ -61,6 +65,7 @@ builder.RunApi((host, configuration, services) =>
     {
         options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
         options.AddPolicy("FakePolicy", policy => policy.RequireRole("Fake"));
+        
     });
 
     builder.Services.AddHttpContextAccessor();
@@ -70,6 +75,8 @@ builder.RunApi((host, configuration, services) =>
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        
 
         app.UseMiddleware<LogUserNameMiddleware>();
     });

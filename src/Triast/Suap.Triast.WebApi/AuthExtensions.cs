@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -22,8 +23,8 @@ public static class AuthExtensions
             o.IncludeErrorDetails = true;
             o.RequireHttpsMetadata = false;
             
-            
-            
+
+
             o.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,               
@@ -31,8 +32,8 @@ public static class AuthExtensions
                 ValidIssuer = config["Oidc:Authority"],
                 //ValidAudience = config["Oidc:ClientId"],
                 ValidateLifetime = true,
-                //RoleClaimType = "role",
-                //NameClaimType = "name"
+                RoleClaimType = "roles", // кастомный value, в который перекинем клеймы из keycloak
+                
         }; 
         });
         return services;

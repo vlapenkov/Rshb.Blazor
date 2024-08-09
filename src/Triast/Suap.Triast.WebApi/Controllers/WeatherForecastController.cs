@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Suap.Triast.Dto;
 using System;
 using Suap.Common.Exceptions;
+using System.Text.Json.Nodes;
+using Suap.Triast.WebApi.Extensions;
 
 namespace Suap.Triast.Controllers
 {
@@ -32,6 +34,8 @@ namespace Suap.Triast.Controllers
 
         public IEnumerable<WeatherForecast> Get()
         {
+
+           
 
             WeatherForecast wf = new()
             {
