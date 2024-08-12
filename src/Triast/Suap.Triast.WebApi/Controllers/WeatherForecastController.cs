@@ -5,6 +5,8 @@ using System;
 using Suap.Common.Exceptions;
 using System.Text.Json.Nodes;
 using Suap.Triast.WebApi.Extensions;
+using Suap.Common.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Suap.Triast.Controllers
 {
@@ -28,8 +30,8 @@ namespace Suap.Triast.Controllers
         [HttpGet]
         [Authorize]
         //[Authorize(Roles = "admin")]
-        [Authorize(Roles = "role1")]
-        //[Authorize(Policy = "AdminPolicy")]        
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "offline_access1")]
+        //[Authorize(AuthenticationSchemes = AuthSchemas.Jwt, Policy = "AdminPolicy")]        
 
 
         public IEnumerable<WeatherForecast> Get()
