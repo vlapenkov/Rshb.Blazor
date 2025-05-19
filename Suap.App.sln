@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Common.Api", "src\Comm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{099AA68D-9222-4C52-AB1C-C20DAE8CC0F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suap.Triast.Scripts", "src\Triast\Suap.Triast.Scripts\Suap.Triast.Scripts.csproj", "{706949AC-82F9-46D0-B429-E60D2391F60A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Suap.Triast.Scripts", "src\Triast\Suap.Triast.Scripts\Suap.Triast.Scripts.csproj", "{706949AC-82F9-46D0-B429-E60D2391F60A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suap.Triast.Console", "src\Triast\Suap.Triast.Console\Suap.Triast.Console.csproj", "{EFA251A2-689D-4707-AB82-68C403654C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{706949AC-82F9-46D0-B429-E60D2391F60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{706949AC-82F9-46D0-B429-E60D2391F60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{706949AC-82F9-46D0-B429-E60D2391F60A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA251A2-689D-4707-AB82-68C403654C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA251A2-689D-4707-AB82-68C403654C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA251A2-689D-4707-AB82-68C403654C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA251A2-689D-4707-AB82-68C403654C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{75C6E223-3627-4777-841E-2D4A70B92612} = {3FD8D488-040D-410F-A7D3-123F11587670}
 		{BC6AD4EC-565D-4A31-9DFE-CB8C9F331AA8} = {0AEF66E0-191E-4E53-99DA-B12C97F35059}
 		{706949AC-82F9-46D0-B429-E60D2391F60A} = {C5B9D5C9-1925-47C0-854F-73812A40C1A2}
+		{EFA251A2-689D-4707-AB82-68C403654C05} = {C5B9D5C9-1925-47C0-854F-73812A40C1A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4C4D6637-D265-424D-B39E-CEBBDC6571A2}

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Rk.Messages.Common.Middlewares;
 using Suap.Common.Api;
+using Suap.Identity.Logic.Hub;
 using Suap.Identity.Logic.Implementations;
 using Suap.Identity.Logic.Interfaces;
 using Suap.Identity.Persistence.Extensions;
@@ -31,10 +32,15 @@ builder.RunApi((host, configuration, services) =>
 
     builder.Services.AddDependencies();
 
+    services.AddSignalR();
+
 
 },
-   (Action<WebApplication>?)(async  app =>
+   (Action<WebApplication>?)(async app =>
    {
+       
+       app.MapHub<ChatHub>("/chat");
+
        app.UseMiddleware<LogUserNameMiddleware>();
        await SeedDefaultRolesAndUser(app);
 

@@ -6,11 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Suap.Identity.Persistence\Suap.Identity.Persistence.csproj" />
     <ProjectReference Include="..\..\Common\Suap.Common.Jwt\Suap.Common.Jwt.csproj" />
     <ProjectReference Include="..\..\Common\Suap.Common.Errors\Suap.Common.Errors.csproj" />
-    <ProjectReference Include="..\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj" />    
+    <ProjectReference Include="..\Suap.Identity.Contracts\Suap.Identity.Contracts.csproj" />
+    
   
     </ItemGroup>
 </Project>

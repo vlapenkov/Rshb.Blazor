@@ -20,7 +20,7 @@ using System.Text.Json;
 using System.ComponentModel;
 
 namespace Suap.Common.Api;
-public static  class HostExtensions
+public static class HostExtensions
 {
     public static void RunApi(this WebApplicationBuilder builder,
         Action<IHostBuilder, IConfiguration, IServiceCollection> configureBuilder,
@@ -30,7 +30,15 @@ public static  class HostExtensions
         builder.Host.UseLogging();
 
 
-        builder.Services.AddCors();
+        //builder.Services.AddCors();
+        builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+           builder =>
+           {
+               builder.AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .SetIsOriginAllowed((host) => true)
+                      .AllowCredentials();
+           }));
 
         builder.Services.AddHealthChecks();
 
@@ -43,9 +51,9 @@ public static  class HostExtensions
             })
             .AddJsonOptions(options =>
             {
-              //  options.JsonSerializerOptions.Converters.Add(new JsonNameEnumConverter());
+                //  options.JsonSerializerOptions.Converters.Add(new JsonNameEnumConverter());
                 options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-            });        
+            });
 
         if (!builder.Environment.IsProduction())
         {
@@ -62,7 +70,7 @@ public static  class HostExtensions
 
             builder.Services.AddFluentValidationRulesToSwagger();
         }
-        
+
 
         ValidatorOptions.Global.PropertyNameResolver =
      (Type type, MemberInfo memberInfo, LambdaExpression expression) =>
@@ -80,11 +88,21 @@ public static  class HostExtensions
         configureBuilder(builder.Host, builder.Configuration, builder.Services);
 
         WebApplication app = builder.Build();
-                
 
-        app.UseCors(builder => builder.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod());
+        app.UseCors("CorsPolicy");
+
+        //app.UseCorsMiddleware();
+        //app.UseCors(builder => 
+        //builder.WithOrigins("http://192.168.0.108:3000")
+        //builder.AllowAnyOrigin()
+        //                  .AllowAnyHeader()
+        //                  .AllowAnyMethod());
+        //app.UseCors(x => x
+        // .AllowAnyOrigin()
+        // .AllowAnyMethod()
+        // .AllowAnyHeader()
+        // //.SetIsOriginAllowed(origin => true) // allow any origin
+        // .AllowCredentials()); // allow credentials
 
         app.MapHealthChecks("/healthz");
 
@@ -94,16 +112,19 @@ public static  class HostExtensions
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-      
+
 
         app.UseRouting();
-        
+
         if (configureApp != null)
             configureApp(app);
 
         app.UseMiddleware<ErrorHandlerMiddleware>();
 
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
 
         app.Run();
     }
