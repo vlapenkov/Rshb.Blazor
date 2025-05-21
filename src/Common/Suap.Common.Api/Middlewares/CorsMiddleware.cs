@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Suap.Common.Api.Middlewares;
+
+// Не используется но теоритически может пригодиться
 public class CorsMiddleware
 {
     private readonly RequestDelegate _next;

@@ -91,18 +91,7 @@ public static class HostExtensions
 
         app.UseCors("CorsPolicy");
 
-        //app.UseCorsMiddleware();
-        //app.UseCors(builder => 
-        //builder.WithOrigins("http://192.168.0.108:3000")
-        //builder.AllowAnyOrigin()
-        //                  .AllowAnyHeader()
-        //                  .AllowAnyMethod());
-        //app.UseCors(x => x
-        // .AllowAnyOrigin()
-        // .AllowAnyMethod()
-        // .AllowAnyHeader()
-        // //.SetIsOriginAllowed(origin => true) // allow any origin
-        // .AllowCredentials()); // allow credentials
+        
 
         app.MapHealthChecks("/healthz");
 
