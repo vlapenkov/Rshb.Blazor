@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Suap.Common.Errors.Exceptions;
 using Suap.Identity.Domain;
 using Suap.Identity.Logic.Dto;
 using Suap.Identity.Logic.Interfaces;
@@ -30,7 +31,10 @@ namespace Suap.IdentityService.Controllers
         public async Task<IActionResult> Create([FromBody] CreateRoleRequest request)
         {
 
-            await _roleService.CreateRole(request);
+           await _roleService.CreateRole(request);            
+
+            // пример 
+           throw new SuapValidationException(nameof(request.Name), "asdasd");
 
             return Ok();
 

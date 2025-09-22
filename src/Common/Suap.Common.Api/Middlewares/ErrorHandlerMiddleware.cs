@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
+using Suap.Common.Errors.Exceptions;
 using Suap.Common.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace Suap.Common.Api.Middlewares
@@ -11,6 +14,8 @@ namespace Suap.Common.Api.Middlewares
         private static JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+
         };
 
         private readonly RequestDelegate _next;
@@ -34,8 +39,20 @@ namespace Suap.Common.Api.Middlewares
                 response.ContentType = "application/json";
 
                 BaseError errorModel;
+                
                 switch (exception)
                 {
+                    case SuapValidationException e:
+                        response.StatusCode = StatusCodes.Status400BadRequest;
+
+                        ModelStateDictionary modelState = new();                        
+
+                        modelState.AddModelError(e.Name, e.Message);                        
+                        
+                        errorModel = new ValidationError(modelState);
+                        _logger.LogError(exception, "Бизнес ошибка:");
+                        break;
+
                     case AppException e:
                         response.StatusCode = StatusCodes.Status400BadRequest;
                         errorModel = new ValidationError(e.Message);
@@ -48,7 +65,7 @@ namespace Suap.Common.Api.Middlewares
                         break;
                 }
 
-                var result = JsonSerializer.Serialize(errorModel, _jsonOptions);
+                var result = JsonSerializer.Serialize(errorModel , _jsonOptions);
                 await response.WriteAsync(result);
             }
         }
